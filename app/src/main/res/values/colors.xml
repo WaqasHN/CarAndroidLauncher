@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_home">#FF101418</color>
+    <color name="bg_drawer">#FF161B21</color>
+    <color name="bg_card">#FF1B2129</color>
+    <color name="fg_primary">#FFEDEEF0</color>
+    <color name="fg_secondary">#FFB4BCC5</color>
+    <color name="accent">#FF3FA7FF</color>
+</resources>
