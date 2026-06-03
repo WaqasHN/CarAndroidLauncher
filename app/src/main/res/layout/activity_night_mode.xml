@@ -9,31 +9,46 @@
     android:clickable="true"
     android:focusable="true">
 
-    <TextView
-        android:id="@+id/clockText"
+    <LinearLayout
+        android:id="@+id/clockColumn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FF606060"
-        android:textSize="160sp"
-        android:fontFamily="sans-serif-light"
-        android:text="00:00"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/dateText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/dateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#FF404040"
-        android:textSize="48sp"
-        android:text="—"
-        app:layout_constraintTop_toBottomOf="@id/clockText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/speedometer"
+        app:layout_constraintHorizontal_chainStyle="spread">
+
+        <TextView
+            android:id="@+id/clockText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF606060"
+            android:textSize="160sp"
+            android:fontFamily="sans-serif-light"
+            android:text="00:00" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#FF404040"
+            android:textSize="48sp"
+            android:text="—" />
+
+    </LinearLayout>
+
+    <com.waqas.carlauncher.SpeedometerView
+        android:id="@+id/speedometer"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/clockColumn"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
