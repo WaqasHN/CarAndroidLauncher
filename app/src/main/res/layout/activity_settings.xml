@@ -28,6 +28,60 @@
             android:textColor="@color/fg_primary"
             android:textSize="18sp" />
 
+        <!-- Speedometer section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/speedometer_section"
+            android:textColor="@color/fg_primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/speedometerSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/speedometer_switch"
+            android:textColor="@color/fg_primary"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/speedometerHomeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/speedometer_home_switch"
+            android:textColor="@color/fg_primary"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/speedometerWhenMovingSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/speedometer_when_moving_switch"
+            android:textColor="@color/fg_primary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/speedometerStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/speedometer_style_label"
+            android:textColor="@color/fg_primary"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/speedometerStyleSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:minWidth="200dp"
+            android:entries="@array/speedometer_styles" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

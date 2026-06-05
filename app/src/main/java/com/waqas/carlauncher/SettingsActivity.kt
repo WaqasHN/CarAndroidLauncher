@@ -1,6 +1,8 @@
 package com.waqas.carlauncher
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.waqas.carlauncher.databinding.ActivitySettingsBinding
@@ -67,5 +69,38 @@ class SettingsActivity : AppCompatActivity() {
         binding.fullScreenSwitch.setOnCheckedChangeListener { _, isChecked ->
             UiState.setFullScreen(this, isChecked)
         }
+
+        binding.speedometerSwitch.isChecked = UiState.isSpeedometerEnabled(this)
+        binding.speedometerHomeSwitch.isChecked = UiState.isSpeedometerOnHome(this)
+        binding.speedometerWhenMovingSwitch.isChecked = UiState.isSpeedometerWhenMoving(this)
+        // Style spinner: index 0 = analog dial, 1 = digital readout.
+        binding.speedometerStyleSpinner.setSelection(if (UiState.isSpeedometerDigital(this)) 1 else 0)
+        refreshSpeedometerSubOptions()
+
+        binding.speedometerSwitch.setOnCheckedChangeListener { _, isChecked ->
+            UiState.setSpeedometerEnabled(this, isChecked)
+            refreshSpeedometerSubOptions()
+        }
+        binding.speedometerHomeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            UiState.setSpeedometerOnHome(this, isChecked)
+            refreshSpeedometerSubOptions()
+        }
+        binding.speedometerWhenMovingSwitch.setOnCheckedChangeListener { _, isChecked ->
+            UiState.setSpeedometerWhenMoving(this, isChecked)
+        }
+        binding.speedometerStyleSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    UiState.setSpeedometerDigital(this@SettingsActivity, position == 1)
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+    }
+
+    /** Style and movement options are shared, so they apply if the gauge is shown anywhere. */
+    private fun refreshSpeedometerSubOptions() {
+        val anywhere = binding.speedometerSwitch.isChecked || binding.speedometerHomeSwitch.isChecked
+        binding.speedometerWhenMovingSwitch.isEnabled = anywhere
+        binding.speedometerStyleSpinner.isEnabled = anywhere
     }
 }

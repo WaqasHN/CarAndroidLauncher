@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Translucent metallic disc so the home-screen gauge reads on any wallpaper. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <gradient
+        android:type="linear"
+        android:angle="135"
+        android:startColor="#C0C2C8D0"
+        android:centerColor="#A74E535A"
+        android:endColor="#C023262B" />
+    <stroke
+        android:width="1.5dp"
+        android:color="#66FFFFFF" />
+</shape>

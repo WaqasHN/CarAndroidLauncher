@@ -114,6 +114,26 @@
             app:outlineColor="#FF000000" />
     </LinearLayout>
 
+    <!-- Splits the home screen: widgets sit left of this line, gauge to its right -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/speedoGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.56" />
+
+    <!-- Optional speedometer on a metallic background, right side, bottom-aligned
+         with the music card -->
+    <com.waqas.carlauncher.SpeedometerView
+        android:id="@+id/homeSpeedometer"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:background="@drawable/bg_speedo_metal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/mediaCard"
+        app:layout_constraintStart_toStartOf="@id/speedoGuideline"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Audio control, above the dock, narrower -->
     <LinearLayout
         android:id="@+id/mediaCard"

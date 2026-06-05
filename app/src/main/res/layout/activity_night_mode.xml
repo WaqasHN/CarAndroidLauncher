@@ -25,7 +25,7 @@
             android:id="@+id/clockText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FF606060"
+            android:textColor="#FFFFFFFF"
             android:textSize="160sp"
             android:fontFamily="sans-serif-light"
             android:text="00:00" />
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="#FF404040"
+            android:textColor="#FFFFFFFF"
             android:textSize="48sp"
             android:text="—" />
 

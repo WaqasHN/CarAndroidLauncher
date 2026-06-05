@@ -30,9 +30,9 @@ class NightModeActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_RESTORED = "restored_from_boot"
 
-        // Hysteresis (km/h): reveal the gauge once we're clearly moving, hide it
-        // once we're nearly stopped. The dead-zone stops GPS jitter at a
-        // standstill from flickering the gauge in and out.
+        // Hysteresis (km/h) for the "only while moving" option: reveal the gauge
+        // once we're clearly moving, hide it once we're nearly stopped. The
+        // dead-zone stops GPS jitter at a standstill from flickering it.
         private const val SPEED_SHOW_KMH = 3f
         private const val SPEED_HIDE_KMH = 1.5f
     }
@@ -45,6 +45,8 @@ class NightModeActivity : AppCompatActivity() {
 
     private var service: AudioPlayerService? = null
     private var isRestored: Boolean = false
+    private var speedometerEnabled = true
+    private var speedometerWhenMoving = false
     private var speedometerShown = false
 
     private val locationManager: LocationManager
@@ -103,8 +105,11 @@ class NightModeActivity : AppCompatActivity() {
         isRestored = intent.getBooleanExtra(EXTRA_RESTORED, false)
         UiState.setInNightMode(this, true)
 
+        // Full brightness: this doubles as a daytime screensaver and must stay
+        // readable in direct sunlight. At night the head unit drops to ~50% on
+        // its own once the headlights come on, so we don't dim in software.
         val lp = window.attributes
-        lp.screenBrightness = 0.01f
+        lp.screenBrightness = 1.0f
         window.attributes = lp
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -112,34 +117,39 @@ class NightModeActivity : AppCompatActivity() {
 
         binding.root.setOnClickListener { dismiss() }
 
-        // Start with the plain clock; the gauge only appears once we're moving.
-        showSpeedometer(false)
+        // The gauge follows the user's settings: off, always on, or only while
+        // moving, in the chosen analog/digital style.
+        speedometerEnabled = UiState.isSpeedometerEnabled(this)
+        speedometerWhenMoving = UiState.isSpeedometerWhenMoving(this)
+        binding.speedometer.setMode(
+            if (UiState.isSpeedometerDigital(this)) SpeedometerView.Mode.DIGITAL
+            else SpeedometerView.Mode.ANALOG
+        )
+        // When gated on movement we start hidden and reveal it once we're moving.
+        speedometerShown = speedometerEnabled && !speedometerWhenMoving
+        showSpeedometer(speedometerShown)
 
-        // We need location access to read speed. On a fresh (non-boot) entry,
-        // ask for it once if we don't have it; the system dialog renders at
-        // normal brightness, unaffected by our dimmed window.
-        if (!hasLocationPermission() && !isRestored) {
+        // We only need location (for the speed value) when the gauge is on. On a
+        // fresh (non-boot) entry, ask for permission once if we don't have it;
+        // the system dialog renders at normal brightness.
+        if (speedometerEnabled && !hasLocationPermission() && !isRestored) {
             requestLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
-    /**
-     * Reveal the gauge once we're clearly moving and hide it again when we slow
-     * to a near-stop, keeping the original large centred clock at rest.
-     */
     private fun updateSpeed(kmh: Float) {
-        if (speedometerShown) {
-            if (kmh < SPEED_HIDE_KMH) {
+        if (!speedometerEnabled) return
+        if (speedometerWhenMoving) {
+            // Reveal once clearly moving, hide again near a standstill.
+            if (speedometerShown && kmh < SPEED_HIDE_KMH) {
                 speedometerShown = false
                 showSpeedometer(false)
-            } else {
-                binding.speedometer.setSpeed(kmh)
+            } else if (!speedometerShown && kmh >= SPEED_SHOW_KMH) {
+                speedometerShown = true
+                showSpeedometer(true)
             }
-        } else if (kmh >= SPEED_SHOW_KMH) {
-            speedometerShown = true
-            showSpeedometer(true)
-            binding.speedometer.setSpeed(kmh)
         }
+        if (speedometerShown) binding.speedometer.setSpeed(kmh)
     }
 
     private fun hasLocationPermission(): Boolean =
@@ -167,7 +177,7 @@ class NightModeActivity : AppCompatActivity() {
     }
 
     private fun startLocationUpdates() {
-        if (!hasLocationPermission()) return
+        if (!speedometerEnabled || !hasLocationPermission()) return
         try {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestLocationUpdates(

@@ -11,7 +11,7 @@
     <string name="back">Back</string>
 
     <!-- Music -->
-    <string name="media_idle">Tap to browse music</string>
+    <string name="media_idle">Tap to browse audio files</string>
     <string name="music_library">Music library</string>
     <string name="no_tracks">No music files found on this device.</string>
     <string name="permission_required">Audio permission is required to browse music.</string>
@@ -27,6 +27,17 @@
     <string name="wallpaper_status_none">No wallpaper selected.</string>
     <string name="wallpaper_failed">Could not load that image.</string>
     <string name="full_screen_switch">Full screen (hide status &amp; nav bars)</string>
+
+    <!-- Speedometer -->
+    <string name="speedometer_section">Speedometer</string>
+    <string name="speedometer_switch">Show speedometer on screensaver</string>
+    <string name="speedometer_home_switch">Show speedometer on home screen</string>
+    <string name="speedometer_when_moving_switch">Only while moving (speed &gt; 0)</string>
+    <string name="speedometer_style_label">Speedometer style:</string>
+    <string-array name="speedometer_styles">
+        <item>Analog dial</item>
+        <item>Digital readout</item>
+    </string-array>
 
     <!-- Settings -->
     <string name="settings_title">Date offset</string>
